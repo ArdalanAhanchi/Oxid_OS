@@ -96,6 +96,7 @@ pub unsafe fn schedule(context: *mut u8) {
         }
     } else {
         scheduling::set_context(context, IDLE_PROCESS.as_mut().unwrap().context);
+        CURR_PROCESS = None; 
     }
 }
 

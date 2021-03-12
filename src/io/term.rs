@@ -86,12 +86,13 @@ fn process_buffer() {
         
         // Go through each one of them.
         for cmd_arg in whole_cmds {
+            // If there is only a single space and no command, don't execute.
             if cmd_arg.len() < 1 {
-                break;
+                continue;
             }
         
             // Split it by space.
-            let cmds: Vec<&str> = cmd_arg.split(" ").collect();
+            let cmds: Vec<&str> = cmd_arg.trim().split(" ").collect();
         
             // Check if the program exists, if it does, check if we're supposed to run in background.
             match crate::programs::get_main(cmds[0]) {
@@ -99,9 +100,11 @@ fn process_buffer() {
                     // Allocate some memory for the arguments.
                     let args_ptr = crate::mem::dyn_alloc::kmalloc(core::mem::size_of::<Args>()
                         , false, true, false) as *mut Args;
+                        
+                    oxid_err!("{}", cmd_arg);
                 
                     // Set the arguments based on the passed data.
-                    (*args_ptr).set_args(&cmd_arg);
+                    (*args_ptr).set_args(&cmd_arg.trim());
                     
                     // Check if we're supposed to run in background.
                     if run_in_bg {

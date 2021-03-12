@@ -1,4 +1,5 @@
 //! A basic program which echoes what was written in the terminal.
+//! For demonstration purposes.
 //!
 //! `Author` : Ardalan Ahanchi
 //! `Date` : Mar 2021
@@ -15,8 +16,10 @@ pub extern "sysv64" fn main(args: *const Args) {
     
         // Add a new line and print all arguments expect the command.
         oxid_println!("");
-        for txt in &full_args[1..] {
-            oxid_print!("{} ", txt);
+        if full_args.len() > 1 {
+            for txt in &full_args[1..] {
+                oxid_print!("{} ", txt);
+            }
         }
     }  
 }

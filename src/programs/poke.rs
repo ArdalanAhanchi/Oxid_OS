@@ -1,4 +1,5 @@
 //! A basic program which checks the memory contents of a passed location.
+//! For demonstration purposes.
 //!
 //! `Author` : Ardalan Ahanchi
 //! `Date` : Mar 2021

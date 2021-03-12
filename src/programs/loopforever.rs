@@ -1,4 +1,5 @@
 //! A basic program which goes into an infinite loop printing for ever (until interrupted).
+//! For demonstration purposes.
 //!
 //! `Author` : Ardalan Ahanchi
 //! `Date` : Mar 2021
@@ -15,11 +16,15 @@ pub extern "sysv64" fn main(args: *const Args) {
         // Get the list of arguments.
         let full_args = (*args).get_args();
         
-        oxid_warn!("Launching loop with {}", full_args[1]);
+        if full_args.len() > 1 {
+            oxid_warn!("Launching loop.");
         
-        // Print it forever.
-        loop {
-            //oxid_println!("{}", full_args[1]);
+            // Print it forever.
+            loop {
+                oxid_println!("{}", full_args[1]);
+            }
+        } else {
+            oxid_err!("Please pass in an argument.");
         }
     }  
 }

@@ -1,4 +1,5 @@
 //! A basic program which simply clears the terminal.
+//! For demonstration purposes.
 //!
 //! `Author` : Ardalan Ahanchi
 //! `Date` : Mar 2021
