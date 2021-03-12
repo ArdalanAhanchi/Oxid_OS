@@ -1,0 +1,57 @@
+#! /bin/bash
+
+# This is a bash script that builds the os in debug mode, then it launches a
+# new gdb debugger insctance wich is connected to qemu. If it's provided
+# with the "-b" flag, it can debug the boot enviornment.
+#
+# Author:  Ardalan Ahanchi
+# Date:    Feb 2021
+# License: GPLv2
+
+DEFAULT_TERMINAL='gnome-terminal'       # The terminal that qemu will open in.
+TERM_EXECUTE_FLAG='--'                  # Flag corresponding to terminal.
+QEMU_GDB_ADDR='localhost:1996'          # The address GDB will connect to.
+OXID_BIN='./build/oxid.bin'             # The kernel binary file (for flags).
+OXID_64_START='_start_64'               # The starting point of 64-bit code.
+OXID_32_START='_start_32'		# The starting point of 32-bit code.
+
+# Build Oxid in debug mode, this will also make it wait for gdb connection.
+$DEFAULT_TERMINAL $TERM_EXECUTE_FLAG make debug
+
+# Wait a bit until the kernel is fully built.
+sleep 5
+
+# Check the first passed argument to see if the user wants to debug 32-bit code.
+if [ $1 == "-b" ]; then
+    # Run gdb in remote mode with the correct address. It has to run the following
+    # commands in order to be able to debug the kernel in it's boot enviornment.
+    # It also enables assembly and sets the correct flavor for it.
+    gdb \
+     -ex "target remote $QEMU_GDB_ADDR"\
+     -ex "symbol-file $OXID_BIN"\
+     -ex "break $OXID_32_START"\
+     -ex "continue"\
+     -ex "set disassemble-next-line on"\
+     -ex "set disassembly-flavor intel"
+
+else	
+    # Run gdb in remote mode with the correct address. It has to run the following
+    # commands in order to be able to debug the kernel. Unfortunately, gdb is not 
+    # smart enough to know when the architecture has been changed (when we're 
+    # changing CPU modes). So we have to switch architecture, wait till we get to 
+    # 64 bit mode, and then switch back to the correct architecture. More details
+    # can be found at: https://wiki.osdev.org/QEMU_and_GDB_in_long_mode
+    gdb \
+     -ex "set arch i386:x86-64:intel"\
+     -ex "target remote $QEMU_GDB_ADDR"\
+     -ex "symbol-file $OXID_BIN"\
+     -ex "break $OXID_64_START"\
+     -ex "continue"\
+     -ex "disconnect"\
+     -ex "set arch i386:x86-64"\
+     -ex "target remote $QEMU_GDB_ADDR"\
+     -ex "set disassemble-next-line on"\
+     -ex "set disassembly-flavor intel"
+ fi
+ 
+# Hint: You can have the assembly text using "set disassemble-next-line on"

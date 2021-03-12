@@ -1,0 +1,22 @@
+[package]
+name = "oxid_os"
+version = "0.5.0"
+authors = ["Ardalan Ahanchi <ardalan@ahanchi.net>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]           # No dependencies!
+
+
+[profile.dev]
+opt-level = 1            # Do some optimizations even for non-release versions.
+
+[features]
+default = []		     # By default don't run the unit tests.
+show-page-faults = []    # Show warnings when page-faults occur.
+unit-test = []		     # Define a feature for unit tests to allow conditional
+			             # compilation of them.
