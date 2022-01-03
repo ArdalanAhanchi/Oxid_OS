@@ -106,7 +106,6 @@ impl HeapAlloc {
     #[inline]
     unsafe fn internal_alloc(&mut self, layout: &Layout, is_user: bool
         , is_writable: bool, is_no_exec: bool) -> *mut u8 {
-        
         // Create a new layout with a page_size aligned size (just to ensure every allocation is 
         // at least one page long to avoid deallocation issues).
         let aligned_layout = Layout::from_size_align_unchecked(

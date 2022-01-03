@@ -16,7 +16,7 @@ mod proc;
 mod debug;
 mod mem;
 mod panic;
-mod programs;
+mod demo;
 
 extern crate alloc;
 
@@ -47,7 +47,7 @@ pub unsafe extern "sysv64" fn kernel_main(multiboot_info: usize) {
     io::term::init();
     
     // Initialize the demonstration programs.
-    programs::init();
+    demo::init();
     
     // Run the unit tests if the unit-test feature is set.
     #[cfg(feature = "unit-test")]

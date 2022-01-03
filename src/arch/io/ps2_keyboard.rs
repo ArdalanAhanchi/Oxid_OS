@@ -10,7 +10,7 @@ use crate::arch::interrupts::{handlers, pic};
 use crate::io::keyboard;
 
 /// The IRQ number for the PS2 keyboard in PIC (set initially by the system).
-const IRQ_NUM: u8 = 1;
+pub const IRQ_NUM: u8 = 1;
 
 // The interrupt number based on the IRQ offset.
 const INT_NUM: u8 = IRQ_NUM + crate::arch::interrupts::IRQ_OFFSET;

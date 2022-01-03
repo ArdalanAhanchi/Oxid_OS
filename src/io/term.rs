@@ -95,13 +95,11 @@ fn process_buffer() {
             let cmds: Vec<&str> = cmd_arg.trim().split(" ").collect();
         
             // Check if the program exists, if it does, check if we're supposed to run in background.
-            match crate::programs::get_main(cmds[0]) {
+            match crate::demo::get_main(cmds[0]) {
                 Some(program_main) => {
                     // Allocate some memory for the arguments.
                     let args_ptr = crate::mem::dyn_alloc::kmalloc(core::mem::size_of::<Args>()
                         , false, true, false) as *mut Args;
-                        
-                    oxid_err!("{}", cmd_arg);
                 
                     // Set the arguments based on the passed data.
                     (*args_ptr).set_args(&cmd_arg.trim());

@@ -21,7 +21,7 @@ pub extern "sysv64" fn main(args: *const Args) {
         
             // Print it forever.
             loop {
-                oxid_println!("{}", full_args[1]);
+                oxid_print!("{}", full_args[1]);
             }
         } else {
             oxid_err!("Please pass in an argument.");
